@@ -1,0 +1,31 @@
+<button (click)="gameStart()">Start</button>
+<button (click)="gamePause()">Pause</button>
+<button (click)="gameResume()">Resume</button>
+<button (click)="gameStop()">Stop</button>
+<button (click)="showGameOver()">Show Game over</button>
+
+<p>Score: {{gameService.score$ | async}}</p>
+<div *ngIf="board$ | async as board" class="board-container">
+    <div class="board">
+        <ng-container *ngFor="let row of board.cells">
+            <s-cell *ngFor="let item of row; trackBy: trackBy" [type]="item.type"></s-cell>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #overlay>
+    <div class="overlay"></div>
+</ng-template>
+
+<ng-template #gameOver>
+    <div class="gameover-modal">
+        <h2 class="gameover-modal__header">
+            Game over!
+        </h2>
+        <div class="gameover-modal__statistic">
+            <h3>Your score is: {{gameService.score$ | async}}</h3>
+        </div>
+
+        <button (click)="gameTryAgain()">Try again!</button>
+    </div>
+</ng-template>

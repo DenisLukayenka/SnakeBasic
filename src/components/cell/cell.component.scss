@@ -1,0 +1,20 @@
+.cell {
+    border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    border: 2px solid #c3c3c3;
+
+    height: 100%;
+}
+
+.cell-default {
+    background-color: #f8f8f8;
+}
+
+.cell-snake {
+    background-color: #96d18f;
+}
+
+.cell-fruit {
+    background-color: #cfbe60;
+}
