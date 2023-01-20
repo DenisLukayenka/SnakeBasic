@@ -1,16 +1,25 @@
-<button (click)="gameStart()">Start</button>
-<button (click)="gamePause()">Pause</button>
-<button (click)="gameResume()">Resume</button>
-<button (click)="gameStop()">Stop</button>
-<button (click)="showGameOver()">Show Game over</button>
+<header class="header">
+    <span class="score">{{gameService.score$ | async}}</span>
+    <img
+        class="header__logo"
+        src="assets/snake.png"
+        width="60px"
+        height="60px"
+    >
 
-<p>Score: {{gameService.score$ | async}}</p>
-<div *ngIf="board$ | async as board" class="board-container">
-    <div class="board">
-        <ng-container *ngFor="let row of board.cells">
-            <s-cell *ngFor="let item of row; trackBy: trackBy" [type]="item.type"></s-cell>
-        </ng-container>
-    </div>
+    <button *ngIf="!(gameInProgress$ | async)" class="button rad-brand-shadow" (click)="gameStart()">Start</button>
+    
+    <ng-container *ngIf="gameInProgress$ | async">
+        <button *ngIf="gameInProgress$ | async" class="button rad-brand-shadow" (click)="gameStop()">Stop</button>
+        <button *ngIf="(paused$ | async)" class="button rad-brand-shadow" (click)="gameResume()">Resume</button>
+        <button *ngIf="!(paused$ | async)" class="button rad-brand-shadow" (click)="gamePause()">Pause</button>
+    </ng-container>
+</header>
+
+<div *ngIf="board$ | async as board" class="board rad-brand-shadow">
+    <ng-container *ngFor="let row of board.cells">
+        <s-cell *ngFor="let item of row; trackBy: trackBy" [type]="item.type"></s-cell>
+    </ng-container>
 </div>
 
 <ng-template #overlay>

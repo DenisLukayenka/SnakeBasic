@@ -35,34 +35,39 @@ export class GameService {
     board$!: BehaviorSubject<Board>;
     score$!: BehaviorSubject<number>;
     gameOver$!: Subject<void>;
-
+    paused$!: Subject<boolean>;
+    inProgress$!: BehaviorSubject<boolean>;
+    
     private subs!: Subscription;
     private snakeCells: Cell[] = [];
     private direction: Direction = 'up';
 
     private tick$!: Observable<any>;
-    private paused$!: Subject<boolean>;
     private stopped$!: Subject<void>;
 
     private options: Options = {
         height: 20,
         width: 20,
         snakeSize: 3,
-        speed: 3000,
+        speed: 200,
     };
 
-    constructor(@Inject(DOCUMENT) private documentRef: Document) {}
-
-    init(options: Options) {
-        this.options = { ...this.options, ...options };
-        this.subs = new Subscription();
-
+    constructor(@Inject(DOCUMENT) private documentRef: Document) {
         this.paused$ = new Subject<boolean>();
         this.stopped$ = new Subject<void>();
 
-        this.board$ = new BehaviorSubject<Board>(this.initializeBoard(options));
+        this.subs = new Subscription();
+        this.board$ = new BehaviorSubject<Board>(this.initializeBoard(this.options));
         this.score$ = new BehaviorSubject<number>(0);
         this.gameOver$ = new Subject<void>();
+        this.inProgress$ = new BehaviorSubject<boolean>(false);
+    }
+
+    init(options: Options) {
+        if (options) {
+            this.options = { ...this.options, ...options };
+            this.reset();
+        }
     }
 
     start(): void {
@@ -74,6 +79,7 @@ export class GameService {
         this.initGameOver();
 
         this.paused$.next(false);
+        this.inProgress$.next(true);
     }
 
     pause() {
@@ -86,12 +92,14 @@ export class GameService {
 
     stop() {
         this.stopped$.next();
+        this.inProgress$.next(false);
     }
 
     reset() {
         this.direction = 'up';
         this.board$.next(this.initializeBoard(this.options));
         this.score$.next(0);
+        this.inProgress$.next(false);
     }
 
     ngOnDestroy() {
@@ -229,6 +237,7 @@ export class GameService {
         this.disposeSubject(this.paused$);
         this.disposeSubject(this.stopped$);
         this.disposeSubject(this.score$);
+        this.disposeSubject(this.inProgress$);
     }
 
     private disposeSubject(subj$: Subject<any>) {

@@ -1,22 +1,38 @@
+@import '/src/styles/index.scss';
+
 $game-over-modal-height: 400px;
 $game-over-modal-width: 600px;
 
-.board-container {
+:host {
+    display: block;
+    background-color: $surface1;
+    height: 100vh;
+}
+
+.header {
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding: 1rem;
+}
+
+.header__logo {
+    display: block;
 }
 
 .board {
     display: grid;
-    gap: 0.1rem;
-    row-gap: 0.4rem;
 
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
 
-    width: 80vw;
+    width: 80vh;
     height: 80vh;
+
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+
+    border: 0.5rem solid $surface3;
+    border-radius: 0.2rem;
 }
 
 .gameover-modal {
@@ -45,4 +61,9 @@ $game-over-modal-width: 600px;
     left: 0px;
 
     opacity: 0.5;
+}
+
+.score {
+    font-size: 1.5rem;
+    font-weight: 600;
 }

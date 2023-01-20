@@ -1,4 +1,16 @@
+@import '/src/styles/index.scss';
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
+}
+
+@font-face {
+    font-family: 'Rubik-Regular';
+    src: local('Rubik-Regular'), url('./assets/fonts/Rubik-Regular.ttf') format('truetype');
+}
+
+* {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    font-family: 'Rubik-Regular', sans-serif;
 }

@@ -7,7 +7,7 @@ import {
     ViewChild,
     ViewContainerRef,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, startWith } from 'rxjs';
 import { Board } from 'src/models/board';
 import { Cell } from 'src/models/cell';
 import { GameService } from 'src/services/game.service';
@@ -20,6 +20,8 @@ import { GameService } from 'src/services/game.service';
 })
 export class BoardComponent {
     board$!: Observable<Board>;
+    paused$!: Observable<boolean>;
+    gameInProgress$!: Observable<boolean>;
 
     @ViewChild('gameOver', { read: TemplateRef })
     gameOverTemplate!: TemplateRef<HTMLElement>;
@@ -37,13 +39,9 @@ export class BoardComponent {
     ) {}
 
     ngOnInit() {
-        this.gameService.init({
-            height: 20,
-            width: 20,
-            snakeSize: 3,
-            speed: 300,
-        });
         this.board$ = this.gameService.board$;
+        this.paused$ = this.gameService.paused$.pipe(startWith(false));
+        this.gameInProgress$ = this.gameService.inProgress$;
 
         this.gameService.gameOver$.subscribe(() => this.showGameOver());
     }

@@ -1,20 +1,25 @@
+@import '/src/styles/index.scss';
+
 .cell {
-    border-radius: 3px 3px 3px 3px;
-    -webkit-border-radius: 3px 3px 3px 3px;
-    -moz-border-radius: 3px 3px 3px 3px;
-    border: 2px solid #c3c3c3;
+    border: 1px solid #c3c3c3;
 
     height: 100%;
+    width: 100%;
+
+    background-color: $secondary;
 }
 
-.cell-default {
-    background-color: #f8f8f8;
+.cell:hover {
+    background-color: rgba(144, 190, 183, 0.89);
 }
 
 .cell-snake {
-    background-color: #96d18f;
+    background-color: $brand;
 }
 
 .cell-fruit {
-    background-color: #cfbe60;
+    background-color: $surface2;
+
+    animation-duration: 0.5s;
+    animation-name: fruitappear;
 }

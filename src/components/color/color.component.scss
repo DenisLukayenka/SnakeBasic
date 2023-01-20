@@ -1,0 +1,96 @@
+@import '/src/styles/index.scss';
+
+$text-size: 2em;
+
+.color-grid-wrapper {
+    margin: 5rem 10rem auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.color-grid {
+    display: grid;
+    gap: 0.5rem;
+
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    .color-grid__1 {
+        background-color: $surface1;
+        color: $text2;
+    }
+    .color-grid__2 {
+        background-color: $surface2;
+        color: $text1;
+    }
+    .color-grid__3 {
+        background-color: $surface3;
+        color: $text1;
+    }
+    .color-grid__4 {
+        background-color: $secondary;
+        color: $text2;
+    }
+}
+
+.color-palette {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: gray;
+    border-radius: 0.2em;
+
+    width: 40vh;
+    height: 40vh;
+
+    font-size: 4em;
+}
+
+.text-samples {
+    display: grid;
+    gap: 2ch;
+    margin-inline-start: 2rem;
+
+    .text-samples__1 {
+        .text-sample__icon {
+            background-color: $brand;
+        }
+    
+        color: $text1;
+    }
+
+    .text-samples__2 {
+        .text-sample__icon {
+            background-color: $text1;
+        }
+    
+        color: $text1;
+    }
+
+    .text-samples__3 {
+        .text-sample__icon {
+            background-color: $text2;
+        }
+    
+        color: $text2;
+    }
+}
+
+.text-sample {
+    display: inline-flex;
+    font-size: $text-size;
+
+    align-items: center;
+}
+.text-sample__icon {
+    display: inline-block;
+    height: $text-size;
+    width: $text-size;
+
+    border-radius: $text-size / 2;
+    margin-inline-end: 0.5em;
+}

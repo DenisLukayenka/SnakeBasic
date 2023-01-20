@@ -1,0 +1,32 @@
+@import './light.scss';
+
+@keyframes fruitappear {
+    from {
+        background-color: $secondary;
+    }
+
+    to {
+        background-color: $surface2;
+    }
+}
+
+
+@keyframes snakeappear {
+    from {
+        background-color: $secondary;
+    }
+
+    to {
+        background-color: $brand;
+    }
+}
+
+@keyframes button-appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
