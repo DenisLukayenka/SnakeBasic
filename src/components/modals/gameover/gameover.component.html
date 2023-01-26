@@ -1,0 +1,11 @@
+<ng-template #header>Game Over!!!</ng-template>
+<ng-template #body>
+    <h3>Your score is: {{ gameService.score$ | async }}</h3>
+</ng-template>
+<ng-template #footer></ng-template>
+
+<s-modal
+    [headerTemplate]="header"
+    [bodyTemplate]="body"
+    [footerTemplate]="footer"
+></s-modal>

@@ -1,3 +1,11 @@
 <s-board></s-board>
 
 <!-- <s-color></s-color> -->
+
+<ng-container *ngIf="modalService.state$ | async as state">
+    <ng-container *ngIf="state.visible">
+        <ng-container [ngSwitch]="state.type">
+            <s-gameover-modal *ngSwitchCase="ModalTypeLocale.GameOver"></s-gameover-modal>
+        </ng-container>
+    </ng-container>
+</ng-container>

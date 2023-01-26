@@ -6,13 +6,17 @@ import { CellComponent } from './cell/cell.component';
 
 import { AppComponent } from './app/app.component';
 import { ColorComponent } from './color/color.component';
+import { ModalComponent } from './modals/modal/modal.component';
+import { GameOverModalComponent } from './modals/gameover/gameover.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CellComponent,
     BoardComponent,
-    ColorComponent
+    ColorComponent,
+    ModalComponent,
+    GameOverModalComponent
   ],
   imports: [
     BrowserModule,

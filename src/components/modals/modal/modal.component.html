@@ -1,0 +1,20 @@
+<div *ngIf="(modalService.state$ | async) as state" class="modal">
+    <div class="modal__header">
+        <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+    </div>
+
+    <div class="modal__body">
+        <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+    </div>
+
+    <div class="modal__footer">
+        <ng-container *ngFor="let action of state.actions">
+            <button type="button" (click)="action.callback($event)">{{action.caption}}</button>
+        </ng-container>
+        <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+    </div>
+</div>
+
+<ng-container *ngIf="(modalService.state$ | async) as state">
+    <div *ngIf="state.visible" class="overlay"></div>
+</ng-container>

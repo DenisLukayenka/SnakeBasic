@@ -21,20 +21,3 @@
         <s-cell *ngFor="let item of row; trackBy: trackBy" [type]="item.type"></s-cell>
     </ng-container>
 </div>
-
-<ng-template #overlay>
-    <div class="overlay"></div>
-</ng-template>
-
-<ng-template #gameOver>
-    <div class="gameover-modal">
-        <h2 class="gameover-modal__header">
-            Game over!
-        </h2>
-        <div class="gameover-modal__statistic">
-            <h3>Your score is: {{gameService.score$ | async}}</h3>
-        </div>
-
-        <button (click)="gameTryAgain()">Try again!</button>
-    </div>
-</ng-template>
