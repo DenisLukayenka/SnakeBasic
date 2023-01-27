@@ -6,6 +6,7 @@ import {
 import { Observable, startWith } from 'rxjs';
 import { Board } from 'src/models/board';
 import { Cell } from 'src/models/cell';
+import { ModalType } from 'src/models/modal';
 import { GameService } from 'src/services/game.service';
 import { ModalService } from 'src/services/modal.service';
 
@@ -19,6 +20,7 @@ export class BoardComponent {
     board$!: Observable<Board>;
     paused$!: Observable<boolean>;
     gameInProgress$!: Observable<boolean>;
+    time$!: Observable<number>;
 
     constructor(
         public gameService: GameService,
@@ -27,6 +29,7 @@ export class BoardComponent {
     ) {}
 
     ngOnInit() {
+        this.time$ = this.gameService.time$;
         this.board$ = this.gameService.board$;
         this.paused$ = this.gameService.paused$.pipe(startWith(false));
         this.gameInProgress$ = this.gameService.inProgress$;
@@ -40,6 +43,7 @@ export class BoardComponent {
 
     gamePause() {
         this.gameService.pause();
+        this.modalService.show(ModalType.Pause);
     }
 
     gameResume() {
@@ -50,20 +54,8 @@ export class BoardComponent {
         this.gameService.stop();
     }
 
-    gameTryAgain() {
-        this.closeGameOver();
-
-        this.gameService.reset();
-
-        this.cdr.detectChanges();
-    }
-
     showGameOver() {
-        this.modalService.show();
-    }
-
-    closeGameOver() {
-        this.modalService.hide();
+        this.modalService.show(ModalType.GameOver);
     }
 
     trackBy(_: any, cell: Cell): string {

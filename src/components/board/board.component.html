@@ -1,18 +1,25 @@
 <header class="header">
     <span class="score">{{gameService.score$ | async}}</span>
-    <img
-        class="header__logo"
-        src="assets/snake.png"
-        width="60px"
-        height="60px"
-    >
+    <img class="header__logo" src="assets/snake.png">
 
-    <button *ngIf="!(gameInProgress$ | async)" class="button rad-brand-shadow" (click)="gameStart()">Start</button>
-    
+    <p class="header__timer">{{(time$ | async) | time}}</p>
+
+    <button *ngIf="!(gameInProgress$ | async)" class="header__button header__button--padding button-icon rad-brand-shadow" (click)="gameStart()">
+        <svg class="icon" viewBox="0 0 16 16">
+            <path d="m 2 2.5 v 11 c 0 1.5 1.269531 1.492188 1.269531 1.492188 h 0.128907 c 0.246093 0.003906 0.488281 -0.050782 0.699218 -0.171876 l 9.796875 -5.597656 c 0.433594 -0.242187 0.65625 -0.734375 0.65625 -1.226562 c 0 -0.492188 -0.222656 -0.984375 -0.65625 -1.222656 l -9.796875 -5.597657 c -0.210937 -0.121093 -0.453125 -0.175781 -0.699218 -0.175781 h -0.128907 s -1.269531 0 -1.269531 1.5 z m 0 0">
+            </path>
+        </svg>
+    </button>
+
     <ng-container *ngIf="gameInProgress$ | async">
         <button *ngIf="gameInProgress$ | async" class="button rad-brand-shadow" (click)="gameStop()">Stop</button>
         <button *ngIf="(paused$ | async)" class="button rad-brand-shadow" (click)="gameResume()">Resume</button>
-        <button *ngIf="!(paused$ | async)" class="button rad-brand-shadow" (click)="gamePause()">Pause</button>
+        <button class="header__button button-icon rad-brand-shadow" (click)="gamePause()">
+            <svg class="icon" viewBox="0 0 24 24" fill="none">
+                <path d="M10.65 19.11V4.89C10.65 3.54 10.08 3 8.64 3H5.01C3.57 3 3 3.54 3 4.89V19.11C3 20.46 3.57 21 5.01 21H8.64C10.08 21 10.65 20.46 10.65 19.11Z"></path>
+                <path d="M21 19.11V4.89C21 3.54 20.43 3 18.99 3H15.36C13.93 3 13.35 3.54 13.35 4.89V19.11C13.35 20.46 13.92 21 15.36 21H18.99C20.43 21 21 20.46 21 19.11Z"></path>
+            </svg>
+        </button>
     </ng-container>
 </header>
 

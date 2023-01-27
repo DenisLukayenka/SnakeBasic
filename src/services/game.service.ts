@@ -34,6 +34,7 @@ import { validatePosition } from 'src/utils/validatePosition';
 export class GameService {
     board$!: BehaviorSubject<Board>;
     score$!: BehaviorSubject<number>;
+    time$!: BehaviorSubject<number>;
     gameOver$!: Subject<void>;
     paused$!: Subject<boolean>;
     inProgress$!: BehaviorSubject<boolean>;
@@ -55,6 +56,7 @@ export class GameService {
     constructor(@Inject(DOCUMENT) private documentRef: Document) {
         this.paused$ = new Subject<boolean>();
         this.stopped$ = new Subject<void>();
+        this.time$ = new BehaviorSubject<number>(0);
 
         this.subs = new Subscription();
         this.board$ = new BehaviorSubject<Board>(this.initializeBoard(this.options));
@@ -72,6 +74,8 @@ export class GameService {
 
     start(): void {
         this.tick$ = this.initGameTick();
+
+        this.subs.add(timer(0, 1000).pipe(tap(v => this.time$.next(v)), tap(v => console.log(v))).subscribe(() => {}));
 
         this.initSnakeTick(this.tick$);
         this.initDirectionChange();
@@ -100,6 +104,7 @@ export class GameService {
         this.board$.next(this.initializeBoard(this.options));
         this.score$.next(0);
         this.inProgress$.next(false);
+        this.time$.next(0);
     }
 
     ngOnDestroy() {
@@ -238,6 +243,7 @@ export class GameService {
         this.disposeSubject(this.stopped$);
         this.disposeSubject(this.score$);
         this.disposeSubject(this.inProgress$);
+        this.disposeSubject(this.time$);
     }
 
     private disposeSubject(subj$: Subject<any>) {

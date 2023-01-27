@@ -6,6 +6,7 @@
     <ng-container *ngIf="state.visible">
         <ng-container [ngSwitch]="state.type">
             <s-gameover-modal *ngSwitchCase="ModalTypeLocale.GameOver"></s-gameover-modal>
+            <s-pause-modal *ngSwitchCase="ModalTypeLocale.Pause"></s-pause-modal>
         </ng-container>
     </ng-container>
 </ng-container>

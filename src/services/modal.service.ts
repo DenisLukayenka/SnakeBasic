@@ -13,9 +13,10 @@ export class ModalService {
         title: 'Game Over!'
     });
 
-    show() {
+    show(type?: ModalType) {
         this.state$.next({
             ...this.state$.value,
+            type: type || this.state$.value.type,
             visible: true,
         });
 

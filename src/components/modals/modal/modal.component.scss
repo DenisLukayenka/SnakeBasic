@@ -1,24 +1,62 @@
-$game-over-modal-height: 400px;
-$game-over-modal-width: 600px;
+@import '/src/styles/index.scss';
 
-.modal {
+$game-over-modal-height: 18rem;
+$game-over-modal-width: 28rem;
+$border-width: 0.1rem;
+$modal-padding: 0.5rem;
+
+.modal-container {
     position: fixed;
     border: 1px;
 
-    background-color: gray;
+    background-color: $surface2;
 
-    height: $game-over-modal-height;
-    width: $game-over-modal-width;
-
-    top: calc(50vh - calc($game-over-modal-height / 2));
-    left: calc(50vw - calc($game-over-modal-width / 2));
+    // height: $game-over-modal-height;
+    // width: $game-over-modal-width;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 
     z-index: 2;
+
+    border-radius: 10px;
+    border: $border-width solid $surface3;
+
+    .modal {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .modal__header {
+        font-size: 1.2em;
+        font-weight: 600;
+        text-align: center;
+
+        padding: $modal-padding;
+    }
+
+    .modal__divider {
+        border: ($border-width / 2) solid $surface3;
+        margin: 0 0.5rem;
+        padding: 0;
+    }
+
+    .modal__body {
+        padding: $modal-padding;
+    }
+
+    .modal__footer {
+        display: flex;
+        justify-content: center;
+        margin-top: auto;
+        padding: $modal-padding;
+    }
 }
 
 .overlay {
     position: fixed;
-    background-color: red;
+    background-color: $overlay;
 
     height: 100vh;
     width: 100vw;

@@ -8,6 +8,8 @@ import { AppComponent } from './app/app.component';
 import { ColorComponent } from './color/color.component';
 import { ModalComponent } from './modals/modal/modal.component';
 import { GameOverModalComponent } from './modals/gameover/gameover.component';
+import { PauseModalComponent } from './modals/pause/pause.component';
+import { TimePipe } from 'src/pipes/time.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { GameOverModalComponent } from './modals/gameover/gameover.component';
     BoardComponent,
     ColorComponent,
     ModalComponent,
-    GameOverModalComponent
+    GameOverModalComponent,
+    PauseModalComponent,
+    TimePipe
   ],
   imports: [
     BrowserModule,
