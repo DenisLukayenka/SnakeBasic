@@ -23,7 +23,7 @@ import {
     buildDefaultBoard,
     setupSnakeCells,
 } from 'src/utils/buildDefaultBoard';
-import { findNextFruitPosition } from 'src/utils/findNextFruitPosition';
+import { findNextFruitCell } from 'src/utils/findNextFruitPosition';
 import { getNextHeadPosition } from 'src/utils/getNextHeadPosition';
 import { mapKeyToDirection } from 'src/utils/mapKeyToDirection';
 import { validatePosition } from 'src/utils/validatePosition';
@@ -38,7 +38,8 @@ export class GameService {
     gameOver$!: Subject<void>;
     paused$!: Subject<boolean>;
     inProgress$!: BehaviorSubject<boolean>;
-    
+    win$!: Subject<void>;
+
     private subs!: Subscription;
     private snakeCells: Cell[] = [];
     private direction: Direction = 'up';
@@ -50,36 +51,30 @@ export class GameService {
         height: 20,
         width: 20,
         snakeSize: 3,
-        speed: 200,
+        speed: 150,
     };
 
     constructor(@Inject(DOCUMENT) private documentRef: Document) {
+        this.subs = new Subscription();
+
+        this.win$ = new Subject<void>();
         this.paused$ = new Subject<boolean>();
         this.stopped$ = new Subject<void>();
         this.time$ = new BehaviorSubject<number>(0);
-
-        this.subs = new Subscription();
         this.board$ = new BehaviorSubject<Board>(this.initializeBoard(this.options));
         this.score$ = new BehaviorSubject<number>(0);
         this.gameOver$ = new Subject<void>();
         this.inProgress$ = new BehaviorSubject<boolean>(false);
     }
 
-    init(options: Options) {
-        if (options) {
-            this.options = { ...this.options, ...options };
-            this.reset();
-        }
-    }
-
     start(): void {
         this.tick$ = this.initGameTick();
 
-        this.subs.add(timer(0, 1000).pipe(tap(v => this.time$.next(v)), tap(v => console.log(v))).subscribe(() => {}));
-
+        this.initTime();
         this.initSnakeTick(this.tick$);
         this.initDirectionChange();
         this.initScoreIncrease();
+        this.initGameWin();
         this.initGameOver();
 
         this.paused$.next(false);
@@ -134,6 +129,22 @@ export class GameService {
         return tick$;
     }
 
+    private initTime() {
+        this.subs.add(this.paused$.pipe(takeUntil(this.stopped$),
+            switchMap(paused => {
+                if (paused) {
+                    return EMPTY;
+                }
+
+                return timer(0, 1000).pipe(
+                    takeUntil(this.stopped$),
+                    tap(v => this.time$.next(this.time$.value + 1)),
+                    tap(v => console.log(v))
+                );
+            })).subscribe(() => {})
+        );
+    }
+
     private initSnakeTick(tick$: Observable<any>) {
         this.subs.add(
             tick$.pipe(tap(() => console.log('snake tick'))).subscribe(() => {
@@ -160,14 +171,32 @@ export class GameService {
             this.score$
                 .pipe(
                     takeUntil(this.stopped$),
-                    tap(() => console.log('fruit change'))
+                    tap(() => console.log('fruit change')),
+                    map(() => findNextFruitCell(this.Board)),
+                    tap(cell => console.debug(cell)),
+                )
+                .subscribe(cell => {
+                    if (!cell) {
+                        this.win$.next();
+                    } else {
+                        this.Board.cells[cell.position.y][cell.position.x].type =
+                            'fruit';
+                        this.board$.next({ ...this.Board });
+                    }
+
+                })
+        );
+    }
+
+    private initGameWin() {
+        this.subs.add(
+            this.win$
+                .pipe(
+                    take(1),
+                    tap(() => console.log('WIN!!!'))
                 )
                 .subscribe(() => {
-                    const fruit = findNextFruitPosition(this.Board);
-
-                    this.Board.cells[fruit.position.y][fruit.position.x].type =
-                        'fruit';
-                    this.board$.next({ ...this.Board });
+                    this.stopped$.next();
                 })
         );
     }
@@ -208,14 +237,13 @@ export class GameService {
 
         switch (nextCell.type) {
             case 'fruit':
-                this.score$.next(this.score$.value + 1);
                 this.moveSnakeForward(nextCell, this.snakeCells);
+                this.score$.next(this.score$.value + 1);
                 break;
             case 'default':
                 this.moveSnakeForward(nextCell, this.snakeCells);
                 this.removeSnakeTail(this.snakeCells);
                 break;
-            // Game over
             case 'snake':
                 this.gameOver$.next();
                 break;
@@ -238,6 +266,7 @@ export class GameService {
             this.subs.unsubscribe();
         }
 
+        this.disposeSubject(this.win$);
         this.disposeSubject(this.board$);
         this.disposeSubject(this.paused$);
         this.disposeSubject(this.stopped$);

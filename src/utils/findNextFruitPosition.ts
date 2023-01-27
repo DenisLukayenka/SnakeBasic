@@ -1,9 +1,13 @@
 import { Board } from 'src/models/board';
 import { getRandomNumber } from './getRandomNumber';
 
-export const findNextFruitPosition = (board: Board) => {
+export const findNextFruitCell = (board: Board) => {
     const cells = board.cells.flat().filter((c) => c.type !== 'snake');
-    const nextFruitCell = cells[getRandomNumber(cells.length)];
+    const index = getRandomNumber(cells.length);
 
-    return nextFruitCell;
+    if (index < 0) {
+        return undefined;
+    }
+
+    return cells[index];
 };

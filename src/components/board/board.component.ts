@@ -1,6 +1,5 @@
 import {
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
 } from '@angular/core';
 import { Observable, startWith } from 'rxjs';
@@ -24,7 +23,6 @@ export class BoardComponent {
 
     constructor(
         public gameService: GameService,
-        private cdr: ChangeDetectorRef,
         private modalService: ModalService,
     ) {}
 
@@ -35,6 +33,7 @@ export class BoardComponent {
         this.gameInProgress$ = this.gameService.inProgress$;
 
         this.gameService.gameOver$.subscribe(() => this.showGameOver());
+        this.gameService.win$.subscribe(() => this.showWin());
     }
 
     gameStart() {
@@ -50,12 +49,12 @@ export class BoardComponent {
         this.gameService.resume();
     }
 
-    gameStop() {
-        this.gameService.stop();
-    }
-
     showGameOver() {
         this.modalService.show(ModalType.GameOver);
+    }
+
+    showWin() {
+        this.modalService.show(ModalType.Win);
     }
 
     trackBy(_: any, cell: Cell): string {

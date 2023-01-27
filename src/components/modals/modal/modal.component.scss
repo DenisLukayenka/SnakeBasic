@@ -11,8 +11,6 @@ $modal-padding: 0.5rem;
 
     background-color: $surface2;
 
-    // height: $game-over-modal-height;
-    // width: $game-over-modal-width;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -37,7 +35,7 @@ $modal-padding: 0.5rem;
     }
 
     .modal__divider {
-        border: ($border-width / 2) solid $surface3;
+        border: calc($border-width / 2) solid $surface3;
         margin: 0 0.5rem;
         padding: 0;
     }

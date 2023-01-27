@@ -11,17 +11,6 @@
     }
 }
 
-
-@keyframes snakeappear {
-    from {
-        background-color: $secondary;
-    }
-
-    to {
-        background-color: $brand;
-    }
-}
-
 @keyframes button-appear {
     from {
         opacity: 0;

@@ -28,7 +28,7 @@ export class GameOverModalComponent {
 
     tryAgain() {
         console.log('try again!!!');
-        this.gameService.reset();
         this.modalService.hide();
+        this.gameService.reset();
     }
 }
